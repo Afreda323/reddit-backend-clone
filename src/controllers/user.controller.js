@@ -4,8 +4,7 @@ export default class UserController {
   constructor() {
     this.userService = new UserService()
   }
-  getUser = async ctx => {
-    const user = await this.userService.getUser()
-    ctx.body = user
-  }
+  signupUser = async ctx => {}
+  loginUser = async ctx => {}
+  getUser = async ctx => {}
 }
