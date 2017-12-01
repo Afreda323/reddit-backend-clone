@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = require('mongoose')
-const { ObjectId } = mongoose.Types
+const { ObjectId } = Schema.Types
 
 const CommunitySchema = new Schema({
   name: {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = require('mongoose')
-const { ObjectId } = mongoose.Types
+const { ObjectId } = Schema.Types
 
 const UserSchema = new Schema(
   {
@@ -10,15 +10,24 @@ const UserSchema = new Schema(
       trim: true,
     },
     password: String,
-    emailAddress: {
+    email: {
       type: String,
       unique: true,
       trim: true,
       lowercase: true,
     },
-    posts: [ObjectId],
-    comments: [ObjectId],
-    subscriptions: [ObjectId],
+    posts: {
+      type: [ObjectId],
+      default: [],
+    },
+    comments: {
+      type: [ObjectId],
+      default: [],
+    },
+    subscriptions: {
+      type: [ObjectId],
+      default: [],
+    },
   },
   { timestamps: true },
 )
