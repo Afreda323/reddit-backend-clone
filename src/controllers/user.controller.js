@@ -12,16 +12,15 @@ module.exports = class UserController {
     const { email, username, password } = ctx.request.body
 
     // Validation assertions
-    ctx.assert(isEmail(email), 'Enter a valid email address')
+    ctx.assert(email && isEmail(email), 'Enter a valid email address')
     ctx.assert(password && password.length >= 6, 'Enter a valid password')
-    ctx.assert(isAlphanumeric(username), 'Enter a valid username')
+    ctx.assert(username && isAlphanumeric(username), 'Enter a valid username')
 
     // Pass data to be saved to mongo
     const userId = await this.userService.signupUser({
       email,
       username,
       password,
-      ctx,
     })
     // On success return user._id
     ctx.body = userId
