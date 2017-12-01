@@ -1,11 +1,11 @@
-import bodyParser from 'koa-bodyparser'
-import Koa from 'koa'
-import logger from 'koa-logger'
-import helmet from 'koa-helmet'
-import mount from 'koa-mount'
-import cors from '@koa/cors'
-import mongoose from 'mongoose'
-import api from './routes'
+const bodyParser = require('koa-bodyparser')
+const Koa = require('koa')
+const logger = require('koa-logger')
+const helmet = require('koa-helmet')
+const mount = require('koa-mount')
+const cors = require('@koa/cors')
+const mongoose = require('mongoose')
+const api = require('./routes')
 
 const { PORT, MONGO_URL } = process.env
 

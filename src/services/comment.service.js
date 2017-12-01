@@ -1,1 +1,1 @@
-export default class CommentService {}
+module.exports = class CommentService {}

@@ -1,5 +1,5 @@
-import Router from 'koa-router'
-import PostController from '../controllers/post.controller'
+const Router = require('koa-router')
+const PostController = require('../controllers/post.controller')
 
 const postRouter = new Router()
 const controller = new PostController()
@@ -18,4 +18,4 @@ postRouter.put('/:id', controller.editPost)
 
 postRouter.delete('/:id', controller.deletePost)
 
-export default postRouter
+module.exports = postRouter

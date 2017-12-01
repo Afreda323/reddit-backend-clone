@@ -1,10 +1,12 @@
-import UserService from '../services/user.service'
+const UserService = require('../services/user.service')
 
-export default class UserController {
+module.exports = class UserController {
   constructor() {
     this.userService = new UserService()
   }
-  signupUser = async ctx => {}
-  loginUser = async ctx => {}
-  getUser = async ctx => {}
+  async signupUser(ctx) {}
+  async loginUser(ctx) {}
+  async getUser(ctx) {
+    ctx.body = ctx.params.id
+  }
 }

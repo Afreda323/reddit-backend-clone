@@ -1,14 +1,14 @@
-import CommunityService from '../services/community.service'
+const CommunityService = require('../services/community.service')
 
-export default class CommunityController {
+module.exports = class CommunityController {
   constructor() {
     this.communityService = new CommunityService()
   }
-  createCommunity = async ctx => {}
-  getCommunity = async ctx => {}
-  search = async ctx => {}
-  subscribe = async ctx => {}
-  createCommunity = async ctx => {}
-  editCommunity = async ctx => {}
-  deleteCommunity = async ctx => {}
+  async createCommunity(ctx) {}
+  async getCommunity(ctx) {}
+  async search(ctx) {}
+  async subscribe(ctx) {}
+  async createCommunity(ctx) {}
+  async editCommunity(ctx) {}
+  async deleteCommunity(ctx) {}
 }

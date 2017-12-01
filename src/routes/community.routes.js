@@ -1,5 +1,5 @@
-import Router from 'koa-router'
-import CommunityController from '../controllers/community.controller'
+const Router = require('koa-router')
+const CommunityController = require('../controllers/community.controller')
 
 const communityRouter = new Router()
 const controller = new CommunityController()
@@ -15,4 +15,4 @@ communityRouter.put('/:id', controller.editCommunity)
 
 communityRouter.delete('/', controller.deleteCommunity)
 
-export default communityRouter
+module.exports = communityRouter

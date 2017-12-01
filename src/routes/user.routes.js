@@ -1,5 +1,5 @@
-import Router from 'koa-router'
-import userController from '../controllers/user.controller'
+const Router = require('koa-router')
+const userController = require('../controllers/user.controller')
 
 const userRouter = new Router()
 const controller = new userController()
@@ -9,4 +9,4 @@ userRouter.post('/login', controller.loginUser)
 
 userRouter.get('/:id', controller.getUser)
 
-export default userRouter
+module.exports = userRouter

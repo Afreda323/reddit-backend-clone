@@ -1,5 +1,5 @@
-import Router from 'koa-router'
-import CommentController from '../controllers/comment.controller'
+const Router = require('koa-router')
+const CommentController = require('../controllers/comment.controller')
 
 const commentRouter = new Router()
 const controller = new CommentController()
@@ -18,4 +18,4 @@ commentRouter.delete('/:id', controller.deleteComment)
 commentRouter.post('/', controller.postComment)
 commentRouter.post('/:id', controller.reply)
 
-export default commentRouter
+module.exports = commentRouter

@@ -1,5 +1,5 @@
-import mongoose, { Schema } from 'mongoose'
-
+const mongoose = require('mongoose')
+const { Schema } = require('mongoose')
 const { ObjectId } = mongoose.Types
 
 const UserSchema = new Schema(
@@ -25,4 +25,4 @@ const UserSchema = new Schema(
 
 const User = mongoose.model('User', UserSchema)
 
-export default User
+module.exports = User

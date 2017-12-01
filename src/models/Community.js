@@ -1,5 +1,5 @@
-import mongoose, { Schema } from 'mongoose'
-
+const mongoose = require('mongoose')
+const { Schema } = require('mongoose')
 const { ObjectId } = mongoose.Types
 
 const CommunitySchema = new Schema({
@@ -20,4 +20,4 @@ const CommunitySchema = new Schema({
 
 const Community = mongoose.model('Community', CommunitySchema)
 
-export default Community
+module.exports = Community

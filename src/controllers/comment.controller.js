@@ -1,17 +1,17 @@
-import CommentService from '../services/comment.service'
+const CommentService = require('../services/comment.service')
 
-export default class CommentController {
+module.exports = class CommentController {
   constructor() {
     this.commentService = new CommentService()
   }
-  getComment = async ctx => {}
-  getCommentsByPost = async ctx => {}
-  getPostsByAuthor = async ctx => {}
-  getCommentsByAuthor = async ctx => {}
-  editComment = async ctx => {}
-  downvote = async ctx => {}
-  upvote = async ctx => {}
-  deleteComment = async ctx => {}
-  postComment = async ctx => {}
-  reply = async ctx => {}
+  async getComment(ctx) {}
+  async getCommentsByPost(ctx) {}
+  async getPostsByAuthor(ctx) {}
+  async getCommentsByAuthor(ctx) {}
+  async editComment(ctx) {}
+  async downvote(ctx) {}
+  async upvote(ctx) {}
+  async deleteComment(ctx) {}
+  async postComment(ctx) {}
+  async reply(ctx) {}
 }

@@ -1,1 +1,1 @@
-export default class CommunityService {}
+module.exports = class CommunityService {}

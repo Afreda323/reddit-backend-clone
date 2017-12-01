@@ -1,1 +1,1 @@
-export default class PostService {}
+module.exports = class PostService {}

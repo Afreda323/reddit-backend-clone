@@ -1,9 +1,9 @@
-import Koa from 'koa'
-import Router from 'koa-router'
-import userRouter from './user.routes'
-import postRouter from './post.routes'
-import communityRouter from './community.routes'
-import commentRouter from './comment.routes'
+const Koa = require('koa')
+const Router = require('koa-router')
+const userRouter = require('./user.routes')
+const postRouter = require('./post.routes')
+const communityRouter = require('./community.routes')
+const commentRouter = require('./comment.routes')
 
 const api = new Koa()
 const router = new Router()
@@ -15,4 +15,4 @@ router.use('/comment', commentRouter.routes())
 
 api.use(router.routes())
 
-export default api
+module.exports = api
