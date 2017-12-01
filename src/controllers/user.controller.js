@@ -11,12 +11,10 @@ module.exports = class UserController {
   async signupUser(ctx) {
     const { email, username, password } = ctx.request.body
 
-    //-----------------
-    // Validation
+    // Validation assertions
     ctx.assert(isEmail(email), 'Enter a valid email address')
     ctx.assert(password && password.length >= 6, 'Enter a valid password')
     ctx.assert(isAlphanumeric(username), 'Enter a valid username')
-    //---------------
 
     // Pass data to be saved to mongo
     const userId = await this.userService.signupUser({
@@ -28,7 +26,24 @@ module.exports = class UserController {
     // On success return user._id
     ctx.body = userId
   }
-  async loginUser(ctx) {}
+  async loginUser(ctx) {
+    const { email, username, password } = ctx.request.body
+
+    // Validation assertions
+    ctx.assert(password && password.length >= 6, 'Enter a valid password')
+    ctx.assert(
+      (email && isEmail(email)) || (username && isAlphanumeric(username)),
+      'Enter a valid email address or username',
+    )
+
+    const token = await this.userService.loginUser({
+      username,
+      email,
+      password,
+    })
+
+    ctx.body = { token }
+  }
   async getUser(ctx) {
     ctx.body = ctx.params.id
   }
