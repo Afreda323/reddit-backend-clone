@@ -1,14 +1,19 @@
 const Router = require('koa-router')
+const jwt = require('koa-jwt')
 const CommunityController = require('../controllers/community.controller')
 
 const communityRouter = new Router()
 const controller = new CommunityController()
 
-communityRouter.post('/', controller.createCommunity)
 
 communityRouter.get('/:id', controller.getCommunity)
-communityRouter.get('/search/:id', controller.search)
+communityRouter.get('/search/:term', controller.search)
 
+
+//Auth routes
+communityRouter.use(jwt({ secret: process.env.SECRET }))
+
+communityRouter.post('/', controller.createCommunity)
 communityRouter.put('/:id/sub', controller.subscribe)
 communityRouter.put('/:id/unsub', controller.createCommunity)
 communityRouter.put('/:id', controller.editCommunity)

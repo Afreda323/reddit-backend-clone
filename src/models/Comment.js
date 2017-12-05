@@ -4,14 +4,35 @@ const { ObjectId } = Schema.Types
 
 const CommentSchema = new Schema(
   {
-    text: { type: String },
-    comments: [ObjectId],
-    author: { type: ObjectId },
-    authorName: { type: String },
-    upvotes: [ObjectId],
-    downvotes: [ObjectId],
+    text: {
+      type: String,
+      required: true,
+    },
+    comments: {
+      type: [ObjectId],
+      default: [],
+    },
+    author: {
+      type: ObjectId,
+      required: true,
+    },
+    authorName: {
+      type: String,
+      required: true,
+    },
+    upvotes: {
+      type: [ObjectId],
+      default: [],
+    },
+    downvotes: {
+      type: [ObjectId],
+      default: [],
+    },
     replies: [this],
-    post: { type: ObjectId },
+    post: {
+      type: ObjectId,
+      required: true,
+    },
   },
   { timestamps: true },
 )

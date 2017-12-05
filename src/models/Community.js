@@ -14,8 +14,18 @@ const CommunitySchema = new Schema({
     type: ObjectId,
     required: true,
   },
-  about: { type: String },
-  subscribers: [ObjectId],
+  about: {
+    type: String,
+    default: '',
+  },
+  subscribers: {
+    type: [ObjectId],
+    default: [],
+  },
+  posts: {
+    type: [ObjectId],
+    default: [],
+  },
   avatarUrl: { type: String },
 })
 

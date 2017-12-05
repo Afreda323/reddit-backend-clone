@@ -28,6 +28,10 @@ const UserSchema = new Schema(
       type: [ObjectId],
       default: [],
     },
+    communities: {
+      type: [ObjectId],
+      default: [],
+    }
   },
   { timestamps: true },
 )

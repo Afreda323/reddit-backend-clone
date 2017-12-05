@@ -12,11 +12,20 @@ const PostSchema = new Schema(
     title: { type: String },
     text: { type: String },
     link: { type: String },
-    comments: [ObjectId],
+    comments: {
+      type: [ObjectId],
+      default: [],
+    },
     author: { type: ObjectId },
     authorName: { type: String },
-    upvotes: [ObjectId],
-    downvotes: [ObjectId],
+    upvotes: {
+      type: [ObjectId],
+      default: [],
+    },
+    downvotes: {
+      type: [ObjectId],
+      default: [],
+    },
   },
   { timestamps: true },
 )
