@@ -10,7 +10,6 @@ module.exports = class UserController {
   }
   async signupUser(ctx) {
     const { email, username, password } = ctx.request.body
-
     // Validation assertions
     ctx.assert(email && isEmail(email), 'Enter a valid email address')
     ctx.assert(password && password.length >= 6, 'Enter a valid password')
@@ -44,6 +43,9 @@ module.exports = class UserController {
     ctx.body = { token }
   }
   async getUser(ctx) {
-    ctx.body = ctx.params.id
+    const { id } = ctx.params
+    console.log(id)
+    const user = await this.userService.getUser(id)
+    ctx.body = user
   }
 }

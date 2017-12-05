@@ -8,14 +8,15 @@ const CommunitySchema = new Schema({
     lowercase: true,
     trim: true,
     unique: true,
+    required: true,
   },
-  about: {
-    type: String,
-    subscribers: [ObjectId],
+  author: {
+    type: ObjectId,
+    required: true,
   },
-  avatarUrl: {
-    type: String,
-  },
+  about: { type: String },
+  subscribers: [ObjectId],
+  avatarUrl: { type: String },
 })
 
 const Community = mongoose.model('Community', CommunitySchema)

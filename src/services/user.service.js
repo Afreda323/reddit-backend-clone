@@ -15,7 +15,13 @@ module.exports = class UserService {
   genToken(id) {
     return jwt.sign({ id }, process.env.SECRET, { expiresIn: '7d' })
   }
-
+  async getUser(id) {
+    const user = await User.findOne({ _id: id }, { password: 0 })
+    if (!user) {
+      this.err(404, "User doesn't exist")
+    }
+    return user
+  }
   async signupUser({ email, username, password, ctx }) {
     // Check for email
     const userByEmail = await User.findOne({ email })

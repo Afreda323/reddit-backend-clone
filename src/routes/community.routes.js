@@ -13,6 +13,6 @@ communityRouter.put('/:id/sub', controller.subscribe)
 communityRouter.put('/:id/unsub', controller.createCommunity)
 communityRouter.put('/:id', controller.editCommunity)
 
-communityRouter.delete('/', controller.deleteCommunity)
+communityRouter.delete('/:id', controller.deleteCommunity)
 
 module.exports = communityRouter
