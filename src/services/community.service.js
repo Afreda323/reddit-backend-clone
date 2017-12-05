@@ -1,17 +1,11 @@
 const Community = require('../models/Community')
+const err = require('../util/err')
 
 module.exports = class CommunityService {
-  // Error handling
-  err(status, message) {
-    const err = new Error()
-    err.status = status
-    err.message = message
-    throw err
-  }
   async createCommunity({ name, about, author }) {
     const existing = await Community.findOne({ name })
     if (existing) {
-      this.err(500, 'Community name taken')
+      err(500, 'Community name taken')
     }
     const newCommunty = await Community.create({ name, about, author })
     return newCommunty
@@ -19,7 +13,7 @@ module.exports = class CommunityService {
   async getCommunity(id) {
     const community = await Community.findOne({ _id: id })
     if (!community) {
-      this.err(404, 'Community not found')
+      err(404, 'Community not found')
     }
     return community
   }
@@ -33,7 +27,7 @@ module.exports = class CommunityService {
       .limit(limit)
     // Handle doesn't exist
     if (!communities) {
-      this.err(404, 'Communities not found')
+      err(404, 'Communities not found')
     }
     // Return desired docs
     return communities
