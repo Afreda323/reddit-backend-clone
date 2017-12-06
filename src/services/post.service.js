@@ -45,4 +45,8 @@ module.exports = class PostService {
     const updated = await post.save()
     return updated
   }
+  async deletePost(post) {
+    const deleted = await post.remove()
+    return deleted
+  }
 }

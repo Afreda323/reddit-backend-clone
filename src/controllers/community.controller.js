@@ -11,6 +11,8 @@ module.exports = class CommunityController {
     this.getCommunity = this.getCommunity.bind(this)
     this.search = this.search.bind(this)
     this.editCommunity = this.editCommunity.bind(this)
+    this.subscribe = this.subscribe.bind(this)
+    this.deleteCommunity = this.deleteCommunity.bind(this)
   }
   async createCommunity(ctx) {
     const { name, about } = ctx.request.body
@@ -53,7 +55,6 @@ module.exports = class CommunityController {
     const communities = await this.communityService.search(q)
     ctx.body = communities
   }
-  async subscribe(ctx) {}
   async editCommunity(ctx) {
     const { id } = ctx.params
     const { name, about } = ctx.request.body
@@ -84,5 +85,8 @@ module.exports = class CommunityController {
     // Send back res on success
     ctx.body = created
   }
+  
+  //TODO
+  async subscribe(ctx) {}
   async deleteCommunity(ctx) {}
 }

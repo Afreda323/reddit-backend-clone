@@ -13,6 +13,7 @@ module.exports = class PostController {
     this.getPost = this.getPost.bind(this)
     this.search = this.search.bind(this)
     this.editPost = this.editPost.bind(this)
+    this.deletePost = this.deletePost.bind(this)
   }
   async createPost(ctx) {
     const { community, user, title, content } = ctx.request.body
@@ -51,8 +52,6 @@ module.exports = class PostController {
     // Send response
     ctx.body = post
   }
-  async getPostsByAuthor(ctx) {}
-  async getPostsByCommunity(ctx) {}
   async search(ctx) {
     const { term, skip } = ctx.query
     // Validate name
@@ -99,17 +98,31 @@ module.exports = class PostController {
     // Fetch user and compare to post author
     const post = await this.postService.getPost(id)
     const user = await this.userService.getUser(author)
-    ctx.assert(
-      String(post.author) === String(user._id),
-      'Not your post',
-    )
+    ctx.assert(String(post.author) === String(user._id), 'Not your post')
     // Edit post
     const edit = await this.postService.editPost(post, q)
     // Send back res on success
     ctx.body = edit
   }
+  async deletePost(ctx) {
+    const { id } = ctx.params
+    ctx.assert(id && isMongoId(id), 'Enter a valid id')
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch user and compare to post author
+    const post = await this.postService.getPost(id)
+    const user = await this.userService.getUser(author)
+    ctx.assert(String(post.author) === String(user._id), 'Not your post')
+    // Edit post
+    const deleted = await this.postService.deletePost(post)
+    // Send back res on success
+    ctx.body = deleted
+  }
+  // TODO
+  async getPostsByAuthor(ctx) {}
+  async getPostsByCommunity(ctx) {}
   async getUserSubs(ctx) {}
   async downvote(ctx) {}
   async upvote(ctx) {}
-  async deletePost(ctx) {}
 }
