@@ -6,9 +6,8 @@ const communityRouter = new Router()
 const controller = new CommunityController()
 
 
+communityRouter.get('/search', controller.search)
 communityRouter.get('/:id', controller.getCommunity)
-communityRouter.get('/search/:term', controller.search)
-
 
 //Auth routes
 communityRouter.use(jwt({ secret: process.env.SECRET }))

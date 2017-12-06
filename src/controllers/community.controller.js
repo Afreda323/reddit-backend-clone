@@ -40,11 +40,16 @@ module.exports = class CommunityController {
     ctx.body = community
   }
   async search(ctx) {
-    const { term } = ctx.params
+    const { term, skip } = ctx.query
     // Validate name
     ctx.assert(term && isAlphanumeric(term), 'Enter a valid string')
+    // Build query
+    const q = { term: term.toLowerCase() }
+    if (skip) {
+      q.skip = parseInt(skip)
+    }
     // Get and send the community
-    const communities = await this.communityService.search(term.toLowerCase())
+    const communities = await this.communityService.search(q)
     ctx.body = communities
   }
   async subscribe(ctx) {}

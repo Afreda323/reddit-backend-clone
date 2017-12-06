@@ -11,6 +11,7 @@ module.exports = class PostController {
     this.communityService = new CommunityService()
     this.createPost = this.createPost.bind(this)
     this.getPost = this.getPost.bind(this)
+    this.search = this.search.bind(this)
   }
   async createPost(ctx) {
     const { community, user, title, content } = ctx.request.body
@@ -51,7 +52,19 @@ module.exports = class PostController {
   }
   async getPostsByAuthor(ctx) {}
   async getPostsByCommunity(ctx) {}
-  async search(ctx) {}
+  async search(ctx) {
+    const { term, skip } = ctx.query
+    // Validate name
+    ctx.assert(term && typeof term === 'string', 'Enter a title')
+    // Build query
+    const q = { term }
+    if (skip) {
+      q.skip = parseInt(skip)
+    }
+    // Get and send the community
+    const posts = await this.postService.search(q)
+    ctx.body = posts
+  }
   async getPost(ctx) {
     const { id } = ctx.params
     // Validate

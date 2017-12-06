@@ -17,7 +17,7 @@ module.exports = class CommunityService {
     }
     return community
   }
-  async search(term, limit = 10, skip = 0) {
+  async search({ term, limit = 10, skip = 0 }) {
     // Query with regex
     const communities = await Community.find(
       { name: new RegExp(`^${term}`, 'i') },
@@ -25,7 +25,7 @@ module.exports = class CommunityService {
     )
       .skip(skip)
       .limit(limit)
-      
+
     // Handle doesn't exist
     if (!communities) {
       err(404, 'Communities not found')

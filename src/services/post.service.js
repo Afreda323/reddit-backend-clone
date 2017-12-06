@@ -19,4 +19,20 @@ module.exports = class PostService {
     }
     return post
   }
+  async search({ term, limit = 10, skip = 0 }) {
+    // Query with regex
+    const posts = await Post.find(
+      { title: new RegExp(term, 'i') },
+      { title: 1 },
+    )
+      .skip(skip)
+      .limit(limit)
+
+    // Handle doesn't exist
+    if (!posts) {
+      err(404, 'Posts not found')
+    }
+    // Return desired docs
+    return posts
+  }
 }
