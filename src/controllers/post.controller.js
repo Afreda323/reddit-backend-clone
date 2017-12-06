@@ -12,6 +12,7 @@ module.exports = class PostController {
     this.createPost = this.createPost.bind(this)
     this.getPost = this.getPost.bind(this)
     this.search = this.search.bind(this)
+    this.editPost = this.editPost.bind(this)
   }
   async createPost(ctx) {
     const { community, user, title, content } = ctx.request.body
@@ -61,7 +62,7 @@ module.exports = class PostController {
     if (skip) {
       q.skip = parseInt(skip)
     }
-    // Get and send the community
+    // Get and send the post
     const posts = await this.postService.search(q)
     ctx.body = posts
   }
@@ -69,13 +70,46 @@ module.exports = class PostController {
     const { id } = ctx.params
     // Validate
     ctx.assert(id && isMongoId(id), 'Enter a valid ID')
-    // Get and send the community
+    // Get and send the post
     const post = await this.postService.getPost(id)
     ctx.body = post
+  }
+  async editPost(ctx) {
+    const { id } = ctx.params
+    const { title, content } = ctx.request.body
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Build query
+    const q = {}
+    if (title) {
+      ctx.assert(
+        title && typeof title === 'string' && title.length > 3,
+        'Enter a title',
+      )
+      q.title = title
+    }
+    if (content) {
+      ctx.assert(
+        content && typeof content === 'string' && content.length > 3,
+        'Enter some content',
+      )
+      q.text = content
+    }
+    // Fetch user and compare to post author
+    const post = await this.postService.getPost(id)
+    const user = await this.userService.getUser(author)
+    ctx.assert(
+      String(post.author) === String(user._id),
+      'Not your post',
+    )
+    // Edit post
+    const edit = await this.postService.editPost(post, q)
+    // Send back res on success
+    ctx.body = edit
   }
   async getUserSubs(ctx) {}
   async downvote(ctx) {}
   async upvote(ctx) {}
-  async editPost(ctx) {}
   async deletePost(ctx) {}
 }

@@ -35,4 +35,14 @@ module.exports = class PostService {
     // Return desired docs
     return posts
   }
+  async editPost(post, { title, text }) {
+    if (title) {
+      post.title = title
+    }
+    if (text) {
+      post.text = text
+    }
+    const updated = await post.save()
+    return updated
+  }
 }
