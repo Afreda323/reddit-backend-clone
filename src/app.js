@@ -42,7 +42,7 @@ app
   .use(bodyParser())
   .use(helmet())
   .use(cors())
-  .use(mount('/api', api))
+  .use(mount(process.env.API_BASE, api))
 
 // Start the application
 app.listen(PORT, () => console.log(`The server is running at ${PORT}`))
