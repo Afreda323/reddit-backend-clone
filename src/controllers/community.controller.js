@@ -17,7 +17,7 @@ module.exports = class CommunityController {
     const token = ctx.request.headers.authorization.split('Bearer ')[1]
     const author = jwt.decode(token).id
     // Validate name
-    ctx.assert(isAlphanumeric(name), 'Enter a valid name')
+    ctx.assert(name && isAlphanumeric(name), 'Enter a valid name')
     // Create communtiy
     const created = await this.communityService.createCommunity({
       about,
@@ -34,7 +34,7 @@ module.exports = class CommunityController {
   async getCommunity(ctx) {
     const { id } = ctx.params
     // Validate
-    ctx.assert(isMongoId(id), 'Enter a valid ID')
+    ctx.assert(id && isMongoId(id), 'Enter a valid ID')
     // Get and send the community
     const community = await this.communityService.getCommunity(id)
     ctx.body = community
@@ -42,7 +42,7 @@ module.exports = class CommunityController {
   async search(ctx) {
     const { term } = ctx.params
     // Validate name
-    ctx.assert(isAlphanumeric(term), 'Enter a valid string')
+    ctx.assert(term && isAlphanumeric(term), 'Enter a valid string')
     // Get and send the community
     const communities = await this.communityService.search(term.toLowerCase())
     ctx.body = communities

@@ -25,6 +25,7 @@ module.exports = class CommunityService {
     )
       .skip(skip)
       .limit(limit)
+      
     // Handle doesn't exist
     if (!communities) {
       err(404, 'Communities not found')

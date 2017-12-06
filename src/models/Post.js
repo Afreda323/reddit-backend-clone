@@ -4,14 +4,9 @@ const { ObjectId } = Schema.Types
 
 const PostSchema = new Schema(
   {
-    type: {
-      type: String,
-      enum: ['link', 'text'],
-    },
     community: ObjectId,
     title: { type: String },
     text: { type: String },
-    link: { type: String },
     comments: {
       type: [ObjectId],
       default: [],
