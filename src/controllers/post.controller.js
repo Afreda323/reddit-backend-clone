@@ -9,11 +9,14 @@ module.exports = class PostController {
     this.postService = new PostService()
     this.userService = new UserService()
     this.communityService = new CommunityService()
+
     this.createPost = this.createPost.bind(this)
     this.getPost = this.getPost.bind(this)
     this.search = this.search.bind(this)
     this.editPost = this.editPost.bind(this)
     this.deletePost = this.deletePost.bind(this)
+    this.getPostsByAuthor = this.getPostsByAuthor.bind(this)
+    this.getPostsByCommunity = this.getPostsByCommunity.bind(this)
   }
   async createPost(ctx) {
     const { community, user, title, content } = ctx.request.body
@@ -119,9 +122,36 @@ module.exports = class PostController {
     // Send back res on success
     ctx.body = deleted
   }
+  async getPostsByAuthor(ctx) {
+    const { id } = ctx.params
+    const { skip } = ctx.query
+    // Build query
+    const q = {  }
+    if (skip) {
+      q.skip = parseInt(skip)
+    }
+    // Validate
+    ctx.assert(id && isMongoId(id), 'Enter a valid ID')
+    // Get and send the post
+    const posts = await this.postService.getPosts({ author: id }, q)
+    ctx.body = posts
+  }
+  async getPostsByCommunity(ctx) {
+    const { id } = ctx.params
+    const { skip } = ctx.query
+    // Build query
+    const q = { }
+    if (skip) {
+      q.skip = parseInt(skip)
+    }
+    // Validate
+    ctx.assert(id && isMongoId(id), 'Enter a valid ID')
+    // Get and send the post
+    const posts = await this.postService.getPosts({ community: id }, q)
+    ctx.body = posts
+  }
   // TODO
-  async getPostsByAuthor(ctx) {}
-  async getPostsByCommunity(ctx) {}
+  
   async getUserSubs(ctx) {}
   async downvote(ctx) {}
   async upvote(ctx) {}

@@ -7,12 +7,14 @@ module.exports = class CommunityController {
   constructor() {
     this.communityService = new CommunityService()
     this.userService = new UserService()
+    
     this.createCommunity = this.createCommunity.bind(this)
     this.getCommunity = this.getCommunity.bind(this)
     this.search = this.search.bind(this)
     this.editCommunity = this.editCommunity.bind(this)
-    this.subscribe = this.subscribe.bind(this)
     this.deleteCommunity = this.deleteCommunity.bind(this)
+    this.subscribe = this.subscribe.bind(this)
+    this.unsubscribe = this.unsubscribe.bind(this)
   }
   async createCommunity(ctx) {
     const { name, about } = ctx.request.body
@@ -103,4 +105,5 @@ module.exports = class CommunityController {
 
   //TODO
   async subscribe(ctx) {}
+  async unsubscribe(ctx) {}
 }

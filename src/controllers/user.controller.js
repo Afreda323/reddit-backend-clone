@@ -4,6 +4,7 @@ const UserService = require('../services/user.service')
 module.exports = class UserController {
   constructor() {
     this.userService = new UserService()
+    
     this.signupUser = this.signupUser.bind(this)
     this.loginUser = this.loginUser.bind(this)
     this.getUser = this.getUser.bind(this)

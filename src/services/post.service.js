@@ -27,6 +27,7 @@ module.exports = class PostService {
     )
       .skip(skip)
       .limit(limit)
+      .sort({updatedAt: -1})
 
     // Handle doesn't exist
     if (!posts) {
@@ -48,5 +49,19 @@ module.exports = class PostService {
   async deletePost(post) {
     const deleted = await post.remove()
     return deleted
+  }
+  async getPosts(query, { skip = 0, limit = 10 }) {
+    // Query with regex
+    const posts = await Post.find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({updatedAt: -1})
+
+    // Handle doesn't exist
+    if (!posts) {
+      err(404, 'Posts not found')
+    }
+    // Return desired docs
+    return posts
   }
 }

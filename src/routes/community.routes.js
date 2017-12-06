@@ -14,7 +14,7 @@ communityRouter.use(jwt({ secret: process.env.SECRET }))
 
 communityRouter.post('/', controller.createCommunity)
 communityRouter.put('/:id/sub', controller.subscribe)
-communityRouter.put('/:id/unsub', controller.createCommunity)
+communityRouter.put('/:id/unsub', controller.unsubscribe)
 communityRouter.put('/:id', controller.editCommunity)
 
 communityRouter.delete('/:id', controller.deleteCommunity)
