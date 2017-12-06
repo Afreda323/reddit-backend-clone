@@ -47,4 +47,8 @@ module.exports = class CommunityService {
     const updated = await community.save()
     return updated
   }
+  async deleteCommunity(community) {
+    const deleted = await community.remove()
+    return deleted
+  }
 }

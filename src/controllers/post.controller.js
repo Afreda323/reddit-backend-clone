@@ -114,7 +114,7 @@ module.exports = class PostController {
     const post = await this.postService.getPost(id)
     const user = await this.userService.getUser(author)
     ctx.assert(String(post.author) === String(user._id), 'Not your post')
-    // Edit post
+    // delete post
     const deleted = await this.postService.deletePost(post)
     // Send back res on success
     ctx.body = deleted

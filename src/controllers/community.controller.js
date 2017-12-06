@@ -85,8 +85,22 @@ module.exports = class CommunityController {
     // Send back res on success
     ctx.body = created
   }
-  
+  async deleteCommunity(ctx) {
+    const { id } = ctx.params
+    ctx.assert(id && isMongoId(id), 'Enter a valid id')
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch user and compare to community author
+    const community = await this.communityService.getCommunity(id)
+    const user = await this.userService.getUser(author)
+    ctx.assert(String(community.author) === String(user._id), 'Not your post')
+    // Delete community
+    const deleted = await this.communityService.deleteCommunity(community)
+    // Send back res on success
+    ctx.body = deleted
+  }
+
   //TODO
   async subscribe(ctx) {}
-  async deleteCommunity(ctx) {}
 }
