@@ -10,6 +10,7 @@ module.exports = class CommunityController {
     this.createCommunity = this.createCommunity.bind(this)
     this.getCommunity = this.getCommunity.bind(this)
     this.search = this.search.bind(this)
+    this.editCommunity = this.editCommunity.bind(this)
   }
   async createCommunity(ctx) {
     const { name, about } = ctx.request.body
@@ -53,6 +54,35 @@ module.exports = class CommunityController {
     ctx.body = communities
   }
   async subscribe(ctx) {}
-  async editCommunity(ctx) {}
+  async editCommunity(ctx) {
+    const { id } = ctx.params
+    const { name, about } = ctx.request.body
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Build query
+    const q = {}
+    // Validate name
+    if (name) {
+      ctx.assert(name && isAlphanumeric(name), 'Enter a valid name')
+      // Make sure name isnt taken
+      const check = await this.communityService.checkDoesntExist(name)
+      console.log(check)
+      ctx.assert(check, 'Name taken')
+      q.name = name
+    }
+    if (about) {
+      ctx.assert(typeof about === 'string', 'Enter a valid description')
+      q.about = about
+    }
+    // Fetch user and compare to community author
+    const community = await this.communityService.getCommunity(id)
+    const user = await this.userService.getUser(author)
+    ctx.assert(String(community.author) === String(user._id), 'Not your community')
+    // Create communtiy
+    const created = await this.communityService.editCommunity(community, q)
+    // Send back res on success
+    ctx.body = created
+  }
   async deleteCommunity(ctx) {}
 }

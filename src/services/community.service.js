@@ -2,6 +2,10 @@ const Community = require('../models/Community')
 const err = require('../util/err')
 
 module.exports = class CommunityService {
+  async checkDoesntExist(name) {
+    const existing = await Community.findOne({ name })
+    return !existing
+  }
   async createCommunity({ name, about, author }) {
     const existing = await Community.findOne({ name })
     if (existing) {
@@ -32,5 +36,15 @@ module.exports = class CommunityService {
     }
     // Return desired docs
     return communities
+  }
+  async editCommunity(community, { name, about }) {
+    if (name) {
+      community.name = name
+    }
+    if (about) {
+      community.about = about
+    }
+    const updated = await community.save()
+    return updated
   }
 }
