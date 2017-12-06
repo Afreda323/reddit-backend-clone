@@ -7,8 +7,7 @@ const cors = require('@koa/cors')
 const mongoose = require('mongoose')
 const api = require('./routes')
 
-const { PORT, MONGO_URL } = process.env
-
+const { PORT, MONGO_URL, API_BASE } = process.env
 mongoose.Promise = global.Promise
 try {
   mongoose.connect(process.env.MONGO_URL, {
@@ -20,7 +19,7 @@ try {
   })
 }
 mongoose.connection
-  .once('open', () => console.log('MongoDB Initialized'))
+  .once('open', () => console.log(`MongoDB Initialized`))
   .on('error', err => {
     throw err
   })
@@ -42,7 +41,8 @@ app
   .use(bodyParser())
   .use(helmet())
   .use(cors())
-  .use(mount(process.env.API_BASE, api))
-
+  .use(mount(API_BASE, api))
+  console.log(`API mounted.`)
+  console.log(`Base URL: ${API_BASE}`)
 // Start the application
-app.listen(PORT, () => console.log(`The server is running at ${PORT}`))
+app.listen(PORT, () => console.log(`Server Port: ${PORT}`))
