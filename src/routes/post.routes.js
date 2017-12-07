@@ -17,7 +17,7 @@ postRouter.use(jwt({ secret: process.env.SECRET }))
 
 postRouter.post('/', controller.createPost)
 postRouter.put('/:id/down', controller.downvote)
-postRouter.put('/:id/:up', controller.upvote)
+postRouter.put('/:id/up', controller.upvote)
 postRouter.put('/:id', controller.editPost)
 
 postRouter.delete('/:id', controller.deletePost)

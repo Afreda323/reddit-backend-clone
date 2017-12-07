@@ -17,6 +17,8 @@ module.exports = class PostController {
     this.deletePost = this.deletePost.bind(this)
     this.getPostsByAuthor = this.getPostsByAuthor.bind(this)
     this.getPostsByCommunity = this.getPostsByCommunity.bind(this)
+    this.upvote = this.upvote.bind(this)
+    this.downvote = this.downvote.bind(this)
   }
   async createPost(ctx) {
     const { community, user, title, content } = ctx.request.body
@@ -126,7 +128,7 @@ module.exports = class PostController {
     const { id } = ctx.params
     const { skip } = ctx.query
     // Build query
-    const q = {  }
+    const q = {}
     if (skip) {
       q.skip = parseInt(skip)
     }
@@ -140,7 +142,7 @@ module.exports = class PostController {
     const { id } = ctx.params
     const { skip } = ctx.query
     // Build query
-    const q = { }
+    const q = {}
     if (skip) {
       q.skip = parseInt(skip)
     }
@@ -150,9 +152,38 @@ module.exports = class PostController {
     const posts = await this.postService.getPosts({ community: id }, q)
     ctx.body = posts
   }
+  async downvote(ctx) {
+    const { id } = ctx.params
+    const { title, content } = ctx.request.body
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch the post
+    const post = await this.postService.getPost(id)
+    // Remove user from both up and downs,
+    // then add it to downs
+    post.upvotes.pull(author)
+    post.downvotes.pull(author)
+    post.downvotes.push(author)
+    const res = await post.save()
+    ctx.body = res
+  }
+  async upvote(ctx) {
+    const { id } = ctx.params
+    const { title, content } = ctx.request.body
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch the post
+    const post = await this.postService.getPost(id)
+    // Remove user from both up and downs,
+    // then add it to downs
+    post.upvotes.pull(author)
+    post.downvotes.pull(author)
+    post.upvotes.push(author)
+    const res = await post.save()
+    ctx.body = res
+  }
   // TODO
-  
   async getUserSubs(ctx) {}
-  async downvote(ctx) {}
-  async upvote(ctx) {}
 }
