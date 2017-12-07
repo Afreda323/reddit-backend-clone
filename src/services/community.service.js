@@ -51,4 +51,14 @@ module.exports = class CommunityService {
     const deleted = await community.remove()
     return deleted
   }
+  async subscribe(community, user) {
+    community.subscribers.push(user)
+    const updated = await community.save()
+    return updated
+  }
+  async unsubscribe(community, user) {
+    community.subscribers.pull(user)
+    const updated = await community.save()
+    return updated
+  }
 }

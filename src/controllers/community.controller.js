@@ -7,7 +7,7 @@ module.exports = class CommunityController {
   constructor() {
     this.communityService = new CommunityService()
     this.userService = new UserService()
-    
+
     this.createCommunity = this.createCommunity.bind(this)
     this.getCommunity = this.getCommunity.bind(this)
     this.search = this.search.bind(this)
@@ -81,7 +81,10 @@ module.exports = class CommunityController {
     // Fetch user and compare to community author
     const community = await this.communityService.getCommunity(id)
     const user = await this.userService.getUser(author)
-    ctx.assert(String(community.author) === String(user._id), 'Not your community')
+    ctx.assert(
+      String(community.author) === String(user._id),
+      'Not your community',
+    )
     // Create communtiy
     const created = await this.communityService.editCommunity(community, q)
     // Send back res on success
@@ -103,7 +106,50 @@ module.exports = class CommunityController {
     ctx.body = deleted
   }
 
-  //TODO
-  async subscribe(ctx) {}
-  async unsubscribe(ctx) {}
+  async subscribe(ctx) {
+    const { id } = ctx.params
+    // Validate
+    ctx.assert(id && isMongoId(id), 'Enter a valid ID')
+    // Get Community
+    const community = await this.communityService.getCommunity(id)
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch user and make sure exists
+    const user = await this.userService.getUser(author)
+    // Verify that user is subscribed
+    ctx.assert(
+      user.subscriptions.indexOf(community._id) === -1,
+      'User subscribed',
+    )
+    const updated = await this.communityService.subscribe(community, user._id)
+    // Update user subscriptions
+    user.subscriptions.push(updated._id)
+    await user.save()
+    ctx.body = updated
+  }
+
+  async unsubscribe(ctx) {
+    const { id } = ctx.params
+    // Validate
+    ctx.assert(id && isMongoId(id), 'Enter a valid ID')
+    // Get Community
+    const community = await this.communityService.getCommunity(id)
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch user and make sure exists
+    const user = await this.userService.getUser(author)
+    // Verify that user is subscribed
+    ctx.assert(
+      user.subscriptions.indexOf(community._id) !== -1,
+      'User not subscribed',
+    )
+    const updated = await this.communityService.unsubscribe(community, user._id)
+    // Update user subscriptions
+    user.subscriptions.pull(updated._id)
+    await user.save()
+
+    ctx.body = updated
+  }
 }
