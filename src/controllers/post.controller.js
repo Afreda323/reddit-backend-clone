@@ -185,7 +185,6 @@ module.exports = class PostController {
     const res = await post.save()
     ctx.body = res
   }
-  // TODO
   async getUserSubs(ctx) {
     const { id } = ctx.params
     const { skip } = ctx.query

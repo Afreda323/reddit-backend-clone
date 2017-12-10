@@ -1,4 +1,5 @@
 const Router = require('koa-router')
+const jwt = require('koa-jwt')
 const CommentController = require('../controllers/comment.controller')
 
 const commentRouter = new Router()
@@ -6,8 +7,10 @@ const controller = new CommentController()
 
 commentRouter.get('/:id', controller.getComment)
 commentRouter.get('/post/:id', controller.getCommentsByPost)
-commentRouter.get('/author/:id', controller.getPostsByAuthor)
 commentRouter.get('/author/:id', controller.getCommentsByAuthor)
+
+//Auth routes
+commentRouter.use(jwt({ secret: process.env.SECRET }))
 
 commentRouter.put('/:id', controller.editComment)
 commentRouter.put('/:id/down', controller.downvote)
