@@ -155,7 +155,6 @@ module.exports = class PostController {
   }
   async downvote(ctx) {
     const { id } = ctx.params
-    const { title, content } = ctx.request.body
     // Strip user id off of jwt
     const token = ctx.request.headers.authorization.split('Bearer ')[1]
     const author = jwt.decode(token).id
@@ -171,7 +170,6 @@ module.exports = class PostController {
   }
   async upvote(ctx) {
     const { id } = ctx.params
-    const { title, content } = ctx.request.body
     // Strip user id off of jwt
     const token = ctx.request.headers.authorization.split('Bearer ')[1]
     const author = jwt.decode(token).id

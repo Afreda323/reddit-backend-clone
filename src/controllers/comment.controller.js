@@ -13,6 +13,8 @@ module.exports = class CommentController {
     this.getComment = this.getComment.bind(this)
     this.getCommentsByAuthor = this.getCommentsByAuthor.bind(this)
     this.getCommentsByPost = this.getCommentsByPost.bind(this)
+    this.upvote = this.upvote.bind(this)
+    this.downvote = this.downvote.bind(this)
   }
   async getComment(ctx) {
     const { id } = ctx.params
@@ -82,10 +84,38 @@ module.exports = class CommentController {
     const comments = await this.commentService.getComments({ post: id }, q)
     ctx.body = comments
   }
+  async downvote(ctx) {
+    const { id } = ctx.params
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch the comment
+    const comment = await this.commentService.getComment(id)
+    // Remove user from both up and downs,
+    // then add it to downs
+    comment.upvotes.pull(author)
+    comment.downvotes.pull(author)
+    comment.downvotes.push(author)
+    const res = await comment.save()
+    ctx.body = res
+  }
+  async upvote(ctx) {
+    const { id } = ctx.params
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch the comment
+    const comment = await this.commentService.getComment(id)
+    // Remove user from both up and downs,
+    // then add it to downs
+    comment.upvotes.pull(author)
+    comment.downvotes.pull(author)
+    comment.upvotes.push(author)
+    const res = await comment.save()
+    ctx.body = res
+  }
   // TODO
   async editComment(ctx) {}
-  async downvote(ctx) {}
-  async upvote(ctx) {}
   async deleteComment(ctx) {}
   async reply(ctx) {}
 }
