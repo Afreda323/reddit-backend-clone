@@ -37,4 +37,8 @@ module.exports = class CommentService {
     const updated = await comment.save()
     return updated
   }
+  async deleteComment(comment) {
+    const deleted = await comment.remove()
+    return deleted
+  }
 }

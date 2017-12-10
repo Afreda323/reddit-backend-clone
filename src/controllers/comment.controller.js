@@ -16,6 +16,7 @@ module.exports = class CommentController {
     this.upvote = this.upvote.bind(this)
     this.downvote = this.downvote.bind(this)
     this.editComment = this.editComment.bind(this)
+    this.deleteComment = this.deleteComment.bind(this)
   }
   async getComment(ctx) {
     const { id } = ctx.params
@@ -135,7 +136,21 @@ module.exports = class CommentController {
     // Send back res on success
     ctx.body = edit
   }
+  async deleteComment(ctx) {
+    const { id } = ctx.params
+    ctx.assert(id && isMongoId(id), 'Enter a valid id')
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Fetch user and compare to comment author
+    const comment = await this.commentService.getComment(id)
+    const user = await this.userService.getUser(author)
+    ctx.assert(String(comment.author) === String(user._id), 'Not your comment')
+    // delete comment
+    const deleted = await this.commentService.deleteComment(comment)
+    // Send back res on success
+    ctx.body = deleted
+  }
   // TODO
-  async deleteComment(ctx) {}
   async reply(ctx) {}
 }
