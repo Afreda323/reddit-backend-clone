@@ -23,7 +23,7 @@ module.exports = class CommentService {
     const comments = await Comment.find(query)
       .skip(skip)
       .limit(limit)
-      .sort({updatedAt: -1})
+      .sort({ updatedAt: -1 })
 
     // Handle doesn't exist
     if (!comments) {
@@ -31,5 +31,10 @@ module.exports = class CommentService {
     }
     // Return desired docs
     return comments
+  }
+  async editComment(comment, text) {
+    comment.text = text
+    const updated = await comment.save()
+    return updated
   }
 }

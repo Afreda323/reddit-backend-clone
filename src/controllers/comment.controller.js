@@ -15,6 +15,7 @@ module.exports = class CommentController {
     this.getCommentsByPost = this.getCommentsByPost.bind(this)
     this.upvote = this.upvote.bind(this)
     this.downvote = this.downvote.bind(this)
+    this.editComment = this.editComment.bind(this)
   }
   async getComment(ctx) {
     const { id } = ctx.params
@@ -114,8 +115,27 @@ module.exports = class CommentController {
     const res = await comment.save()
     ctx.body = res
   }
+  async editComment(ctx) {
+    const { id } = ctx.params
+    const { text } = ctx.request.body
+    // Strip user id off of jwt
+    const token = ctx.request.headers.authorization.split('Bearer ')[1]
+    const author = jwt.decode(token).id
+    // Validate text
+    ctx.assert(
+      text && typeof text === 'string' && text.length > 3,
+      'Enter text'
+    )
+    // Fetch user and compare to comment author
+    const comment = await this.commentService.getComment(id)
+    const user = await this.userService.getUser(author)
+    ctx.assert(String(comment.author) === String(user._id), 'Not your comment')
+    // Edit comment
+    const edit = await this.commentService.editComment(comment, text)
+    // Send back res on success
+    ctx.body = edit
+  }
   // TODO
-  async editComment(ctx) {}
   async deleteComment(ctx) {}
   async reply(ctx) {}
 }
