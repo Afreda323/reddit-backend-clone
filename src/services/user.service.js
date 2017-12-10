@@ -60,4 +60,8 @@ module.exports = class UserService {
     // Id all checks out, pass the token
     return this.genToken(user._id)
   }
+  async deleteUser(user) {
+    const deleted = await user.remove()
+    return deleted
+  }
 }
