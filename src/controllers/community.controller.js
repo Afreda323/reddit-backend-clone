@@ -105,7 +105,6 @@ module.exports = class CommunityController {
     // Send back res on success
     ctx.body = deleted
   }
-
   async subscribe(ctx) {
     const { id } = ctx.params
     // Validate
@@ -128,7 +127,6 @@ module.exports = class CommunityController {
     await user.save()
     ctx.body = updated
   }
-
   async unsubscribe(ctx) {
     const { id } = ctx.params
     // Validate

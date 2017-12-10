@@ -7,6 +7,20 @@ This will be followed by a front end built with either Next.js or Vue.js (Not su
     npm install
     npm start
 
+## Features
+
+ - User can signup and login
+ - User can create and subscribe to communities
+ - Communities can be editted and deleted
+ - Users can create posts
+ - Posts can be editted and deleted
+ - User can upvote and downvote posts
+ - Posts can be queried for
+ - User can comment on a post
+ - Comments can be editted and deleted
+ - Users can upvote and downvote comments
+ - User can search for posts and communities
+
 ## Stack so far
 
  - Koa (With various middlewares)

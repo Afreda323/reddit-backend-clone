@@ -4,7 +4,7 @@ const UserService = require('../services/user.service')
 module.exports = class UserController {
   constructor() {
     this.userService = new UserService()
-    
+
     this.signupUser = this.signupUser.bind(this)
     this.loginUser = this.loginUser.bind(this)
     this.getUser = this.getUser.bind(this)
@@ -32,7 +32,7 @@ module.exports = class UserController {
     ctx.assert(password && password.length >= 6, 'Enter a valid password')
     ctx.assert(
       (email && isEmail(email)) || (username && isAlphanumeric(username)),
-      'Enter a valid email address or username',
+      'Enter a valid email address or username'
     )
 
     const token = await this.userService.loginUser({
@@ -49,4 +49,7 @@ module.exports = class UserController {
     const user = await this.userService.getUser(id)
     ctx.body = user
   }
+  //TODO
+  async deleteUser(ctx) {}
+  async editUser(ctx) {}
 }
