@@ -5,9 +5,9 @@ const CommentController = require('../controllers/comment.controller')
 const commentRouter = new Router()
 const controller = new CommentController()
 
-commentRouter.get('/:id', controller.getComment)
 commentRouter.get('/post/:id', controller.getCommentsByPost)
 commentRouter.get('/author/:id', controller.getCommentsByAuthor)
+commentRouter.get('/:id', controller.getComment)
 
 //Auth routes
 commentRouter.use(jwt({ secret: process.env.SECRET }))

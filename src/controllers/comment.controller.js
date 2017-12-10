@@ -11,6 +11,8 @@ module.exports = class CommentController {
     this.postService = new PostService()
     this.postComment = this.postComment.bind(this)
     this.getComment = this.getComment.bind(this)
+    this.getCommentsByAuthor = this.getCommentsByAuthor.bind(this)
+    this.getCommentsByPost = this.getCommentsByPost.bind(this)
   }
   async getComment(ctx) {
     const { id } = ctx.params
@@ -52,10 +54,35 @@ module.exports = class CommentController {
     // Send response
     ctx.body = post
   }
+  async getCommentsByAuthor(ctx) {
+    const { id } = ctx.params
+    const { skip } = ctx.query
+    // Build query
+    const q = {}
+    if (skip) {
+      q.skip = parseInt(skip)
+    }
+    // Validate
+    ctx.assert(id && isMongoId(id), 'Enter a valid ID')
+    // Get and send the post
+    const comments = await this.commentService.getComments({ author: id }, q)
+    ctx.body = comments
+  }
+  async getCommentsByPost(ctx) {
+    const { id } = ctx.params
+    const { skip } = ctx.query
+    // Build query
+    const q = {}
+    if (skip) {
+      q.skip = parseInt(skip)
+    }
+    // Validate
+    ctx.assert(id && isMongoId(id), 'Enter a valid ID')
+    // Get and send the post
+    const comments = await this.commentService.getComments({ post: id }, q)
+    ctx.body = comments
+  }
   // TODO
-  async getCommentsByPost(ctx) {}
-  async getPostsByAuthor(ctx) {}
-  async getCommentsByAuthor(ctx) {}
   async editComment(ctx) {}
   async downvote(ctx) {}
   async upvote(ctx) {}
