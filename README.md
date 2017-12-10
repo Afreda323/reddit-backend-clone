@@ -2,24 +2,37 @@
 
 In an attempt to get back to adding more to my Github as well as trying familiarize myself with Koa, I have decided to make a reddit clone.  
 
-This will be followed by a front end built with either Next.js or Vue.js (Not sure which).
+This may be followed by a front end built with either Next.js or Vue.js (Not sure which).
 
     npm install
     npm start
 
 ## Features
 
+### User
  - User can signup and login
- - User can create and subscribe to communities
+
+### Community
+ - Communities can be created and subscribed to
  - Communities can be editted and deleted
- - Users can create posts
+ - Communities can be searched for
+
+### Post
+ - Posts can be created
  - Posts can be editted and deleted
- - User can upvote and downvote posts
+ - Posts can be upvoted and downvoted
  - Posts can be queried for
- - User can comment on a post
+ - Posts can be searched for
+
+### Comment
+ - Comments can be created for posts
  - Comments can be editted and deleted
- - Users can upvote and downvote comments
- - User can search for posts and communities
+ - Comments can be upvoted and downvoted
+
+## TODO
+
+ - User can be editted and deleted
+ - User can reply to comments
 
 ## Stack so far
 
